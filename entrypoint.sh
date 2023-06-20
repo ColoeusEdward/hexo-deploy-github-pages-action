@@ -39,6 +39,19 @@ echo ">>> Install Git ..."
 apt-get update && \
 apt-get install -y git && \
 
+# Configures Git.
+
+echo ">>> Config git ..." + "${GITHUB_ACTOR}"
+
+CURRENT_DIR=$(pwd)
+
+git config --global user.name "${GITHUB_ACTOR}"
+git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+git config --global --add safe.directory "${CURRENT_DIR}"
+
+# git remote add origin "${REPOSITORY_PATH}"
+# git checkout --orphan "${TARGET_BRANCH}"
+
 # Directs the action to the the Github workspace.
 cd "${GITHUB_WORKSPACE}"
 
@@ -48,40 +61,32 @@ git submodule update
 
 
 echo ">>> Install NPM dependencies ..."
+npm install -g hexo-cli
 npm install
 
-echo ">>> Clean cache files ..."
-npx hexo clean
+echo ">>> Clean cache files ... &&  Generate file ..."
+npm run mbuild
+# npx hexo clean
 
-echo ">>> Generate file ..."
-npx hexo generate
+# echo ">>> Generate file ..."
+# npx hexo generate
 
-cd "${TARGET_PUBLISH_DIR}"
 
-# Configures Git.
 
-echo ">>> Config git ..."
+# cd "${TARGET_PUBLISH_DIR}"
 
-CURRENT_DIR=$(pwd)
 
-git init
-git config --global user.name "${GITHUB_ACTOR}"
-git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-git config --global --add safe.directory "${CURRENT_DIR}"
 
-git remote add origin "${REPOSITORY_PATH}"
-git checkout --orphan "${TARGET_BRANCH}"
+# if [ -n "${CNAME}" ]; then
+#     echo ${CNAME} > CNAME
+# fi
 
-if [ -n "${CNAME}" ]; then
-    echo ${CNAME} > CNAME
-fi
+# git add .
 
-git add .
+# echo '>>> Start Commit ...'
+# git commit --allow-empty -m "Building and deploying Hexo project from Github Action"
 
-echo '>>> Start Commit ...'
-git commit --allow-empty -m "Building and deploying Hexo project from Github Action"
-
-echo '>>> Start Push ...'
-git push -u origin "${TARGET_BRANCH}" --force
+# echo '>>> Start Push ...'
+# git push -u origin "${TARGET_BRANCH}" --force
 
 echo ">>> Deployment successful!"
