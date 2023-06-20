@@ -48,6 +48,7 @@ CURRENT_DIR=$(pwd)
 git config --global user.name "${GITHUB_ACTOR}"
 git config --global user.email a50541853@gmail.com
 git config --global --add safe.directory "${CURRENT_DIR}"
+git config --global --add safe.directory "${CURRENT_DIR}/themes/volantis"
 
 # git remote add origin "${REPOSITORY_PATH}"
 # git checkout --orphan "${TARGET_BRANCH}"
