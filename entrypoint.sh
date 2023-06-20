@@ -41,7 +41,7 @@ apt-get install -y git && \
 
 # Configures Git.
 
-echo ">>> Config git ..."
+echo ">>> Config git ..." + "${GITHUB_ACTOR}"
 
 CURRENT_DIR=$(pwd)
 
