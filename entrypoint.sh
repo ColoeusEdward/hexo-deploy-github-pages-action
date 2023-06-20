@@ -42,6 +42,11 @@ apt-get install -y git && \
 # Directs the action to the the Github workspace.
 cd "${GITHUB_WORKSPACE}"
 
+echo ">>> pull submodule ..."
+git submodule init
+git submodule update
+
+
 echo ">>> Install NPM dependencies ..."
 npm install
 
