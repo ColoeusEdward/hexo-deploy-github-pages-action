@@ -46,7 +46,7 @@ echo ">>> Config git ..." + "${GITHUB_ACTOR}"
 CURRENT_DIR=$(pwd)
 
 git config --global user.name "${GITHUB_ACTOR}"
-git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+git config --global user.email a50541853@gmail.com
 git config --global --add safe.directory "${CURRENT_DIR}"
 
 # git remote add origin "${REPOSITORY_PATH}"
