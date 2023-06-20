@@ -39,20 +39,6 @@ echo ">>> Install Git ..."
 apt-get update && \
 apt-get install -y git && \
 
-# Directs the action to the the Github workspace.
-cd "${GITHUB_WORKSPACE}"
-
-echo ">>> Install NPM dependencies ..."
-npm install
-
-echo ">>> Clean cache files ..."
-npx hexo clean
-
-echo ">>> Generate file ..."
-npx hexo generate
-
-cd "${TARGET_PUBLISH_DIR}"
-
 # Configures Git.
 
 echo ">>> Config git ..."
@@ -67,16 +53,36 @@ git config --global --add safe.directory "${CURRENT_DIR}"
 git remote add origin "${REPOSITORY_PATH}"
 git checkout --orphan "${TARGET_BRANCH}"
 
-if [ -n "${CNAME}" ]; then
-    echo ${CNAME} > CNAME
-fi
+# Directs the action to the the Github workspace.
+cd "${GITHUB_WORKSPACE}"
 
-git add .
+echo ">>> Install NPM dependencies ..."
+npm install -g hexo-cli
+npm install
 
-echo '>>> Start Commit ...'
-git commit --allow-empty -m "Building and deploying Hexo project from Github Action"
+echo ">>> Clean cache files ... &&  Generate file ..."
+npm run mbuild
+# npx hexo clean
 
-echo '>>> Start Push ...'
-git push -u origin "${TARGET_BRANCH}" --force
+# echo ">>> Generate file ..."
+# npx hexo generate
+
+
+
+# cd "${TARGET_PUBLISH_DIR}"
+
+
+
+# if [ -n "${CNAME}" ]; then
+#     echo ${CNAME} > CNAME
+# fi
+
+# git add .
+
+# echo '>>> Start Commit ...'
+# git commit --allow-empty -m "Building and deploying Hexo project from Github Action"
+
+# echo '>>> Start Push ...'
+# git push -u origin "${TARGET_BRANCH}" --force
 
 echo ">>> Deployment successful!"
